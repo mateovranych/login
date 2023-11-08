@@ -11,7 +11,4 @@ public partial class Alumno
 
     public int? Dni { get; set; }
 
-    public string? Calle { get; set; }
-
- 
 }

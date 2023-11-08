@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TrabajoFinalProgramacion.Models;
 
-using logprogra.Recursos;
+using TrabajoFinalProgramacion.Recursos;
 using TrabajoFinalProgramacion.Servicios.Contrato;
 using System.Security.Claims;
 

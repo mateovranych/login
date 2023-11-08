@@ -11,6 +11,6 @@ public partial class Profesore
 
     public string Apellido { get; set; } = null!;
 
-    public int Sexo { get; set; }
+    public int Sexo { get; set; } = 0;
 
 }

@@ -3,7 +3,7 @@ using System.Text;
 
 
 
-namespace logprogra.Recursos
+namespace TrabajoFinalProgramacion.Recursos
 {
     public class Utilidades
     {

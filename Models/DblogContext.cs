@@ -40,9 +40,7 @@ public partial class DblogContext : DbContext
             entity.HasIndex(e => e.Dni, "UNICODNI").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("ID");
-            entity.Property(e => e.Calle)
-                .HasMaxLength(50)
-                .HasColumnName("CALLE");
+
             
         });
 
