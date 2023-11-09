@@ -25,31 +25,7 @@ namespace TrabajoFinalProgramacion.Controllers
             return View(listaAlumnos);
         }
 
-
-        //public IActionResult Avanzar(int id)
-        //{
-        //    var alumno = _context.Alumnos.OrderBy(a => a.Id).FirstOrDefault(a => a.Id > id);
-        //    if (alumno == null)
-        //    {
-
-        //        alumno = _context.Alumnos.OrderBy(a => a.Id).FirstOrDefault();
-        //    }
-
-        //    return RedirectToAction("Index", new { id = alumno.Id });
-        //}
-
-        //public IActionResult Retroceder(int id)
-        //{
-        //    var alumno = _context.Alumnos.OrderByDescending(a => a.Id).FirstOrDefault(a => a.Id < id);
-        //    if (alumno == null)
-        //    {
-
-        //        alumno = _context.Alumnos.OrderByDescending(a => a.Id).FirstOrDefault();
-        //    }
-
-        //    return RedirectToAction("Index", new { id = alumno.Id });
-        //}
-
+        
 
         public async Task<IActionResult> Details(int? id)
         {
