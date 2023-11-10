@@ -9,9 +9,10 @@
     <meta name="viewport" content="width=device-width" />
     <title>IniciarSesion</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
-
+@*
     <div class="container mt-5 pt-5">
 
         <div class="row justify-content-center">
@@ -48,7 +49,17 @@
         </div>
 
 
-    </div>
+    </div>*@
+
+
+<form class="form-inicio" asp-controller="Inicio" asp-action="IniciarSesion" method="post">
+    <h2 class="titulo">Login</h2>
+    <input class="input-login" type="text" placeholder="Correo" required name="correo" />
+    <input class="input-login" type="password" placeholder="Contraseña" required name="clave" />
+    <button class="button-login" type="submit">Iniciar Sesion</button>
+        <div style="width:100%;display:flex;justify-content:center;align-items:center;gap:10px;">¿No tienes una cuenta? <a class="link-navegacion" href="@Url.Action("Registrarse","Inicio")">Registrarse</a></div>
+        
+    </form>
 
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
