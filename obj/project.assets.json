@@ -10325,9 +10325,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Mateo\\source\\repos\\TrabajoFinalProgramacion\\TrabajoFinalProgramacion.csproj",
-      "projectName": "TrabajoFinalProgramacion",
-      "projectPath": "C:\\Users\\Mateo\\source\\repos\\TrabajoFinalProgramacion\\TrabajoFinalProgramacion.csproj",
+      "projectUniqueName": "C:\\Users\\Mateo\\source\\repos\\TrabajoFinalProgramacion\\PrograTF3.csproj",
+      "projectName": "PrograTF3",
+      "projectPath": "C:\\Users\\Mateo\\source\\repos\\TrabajoFinalProgramacion\\PrograTF3.csproj",
       "packagesPath": "C:\\Users\\Mateo\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Mateo\\source\\repos\\TrabajoFinalProgramacion\\obj\\",
       "projectStyle": "PackageReference",

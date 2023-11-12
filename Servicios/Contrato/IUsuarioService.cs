@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TrabajoFinalProgramacion.Models;
+using PrograTF3.Models;
 
 
 
 
-namespace TrabajoFinalProgramacion.Servicios.Contrato
+namespace PrograTF3.Servicios.Contrato
 {
     public interface IUsuarioService
     {

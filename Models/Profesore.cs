@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TrabajoFinalProgramacion.Models;
+namespace PrograTF3.Models;
 
 public partial class Profesore
 {

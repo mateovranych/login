@@ -1,4 +1,4 @@
-﻿@model TrabajoFinalProgramacion.Models.Usuario;
+﻿@model PrograTF3.Models.Usuario;
 @{
     Layout = null;
 }
@@ -27,7 +27,7 @@
                             <input class="form-control mb-3" type="text" placeholder="Correo" asp-for="Correo" required />
                             <input class="form-control mb-3" type="password" placeholder="Contraseña" asp-for="Clave" required />
                             <div class="d-grid gap-2 mb-3">
-                                <button class="btn btn-primary" type="submit">Registrate</button>
+                                <button class="btn btn-secondary" type="submit">Registrate</button>
 
                             </div>
                             @if (ViewData["Mensaje"] != null)

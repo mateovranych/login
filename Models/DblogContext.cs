@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace TrabajoFinalProgramacion.Models;
+namespace PrograTF3.Models;
 
 public partial class DblogContext : DbContext
 {

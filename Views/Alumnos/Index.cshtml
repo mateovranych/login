@@ -1,42 +1,33 @@
-﻿@model IEnumerable<TrabajoFinalProgramacion.Models.Alumno>
+﻿
+<h1 class="text-white fs-1 text-center mt-5"> Alumnos</h1>
 
-@{
-    ViewData["Title"] = "Index";
-}
 
-<h1>Tabla Alumnos</h1>
+<div class="d-flex justify-content-center align-items-center mt-4">
+    <form class="col-9 col-sm-9 col-md-8 col-lg-6 col-xl-4  d-flex flex-column justify-content-center align-items-center" asp-controller="Alumnos" method="post">
 
-<p>
-    <a class="btn btn-primary" asp-action="Create">Crear nuevo alumno</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Dni)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nombre)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Dni)
-                </td>
-                <td>
-                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Borrar</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+
+        <div class="mb-3" style="width:100%">
+            <label class="form-label"></label>
+            <input type="text" class="form-control" required value="@Model.Nombre" readonly>
+        </div>
+        <div class="mb-3" style="width:100%">
+            <label class="form-label"></label>
+            <input type="text" class="form-control" required value="@Model.Dni" readonly>
+        </div>
+
+        <div class="d-flex justify-content-between w-100 px-3">
+            <button class="btn btn-outline-secondary" type="submit" name="numero" asp-action="FirstStudent">Primero</button>
+            <div>
+                <button class="btn btn-secondary " name="numero" asp-action="Previous">Anterior</button>
+                <button class="btn btn-secondary " name="numero" asp-action="Next">Siguiente</button>
+
+            </div>
+            <button class="btn btn-outline-secondary" name="numero" asp-action="LastStudent">Ultimo</button>
+        </div>
+
+
+    </form>
+
+
+</div>
+

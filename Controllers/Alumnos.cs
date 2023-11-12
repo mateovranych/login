@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
-using TrabajoFinalProgramacion.Models;
+using PrograTF3.Models;
 
-namespace TrabajoFinalProgramacion.Controllers
+namespace PrograTF3.Controllers
 {
+    [Authorize(Policy = "RequiereAutenticacion")]
     public class Alumnos : Controller
     {
         private readonly DblogContext _context;
@@ -19,30 +21,95 @@ namespace TrabajoFinalProgramacion.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+
+        public async Task<IActionResult> Index()
         {
-            var listaAlumnos = _context.Alumnos.ToList();
-            return View(listaAlumnos);
+               
+                var alumno = await _context.Alumnos.FirstOrDefaultAsync();                
+                TempData["indice"] = 0;
+                return View(alumno);
+
+           
         }
+
+        public async Task<IActionResult> Next()
+        {
+            
+                ViewBag.nombre = TempData["nombreUsuario"];
+                ViewBag.inicioSesion = true;
+                ViewBag.session = true;
+
+                var alumnos = await _context.Alumnos.ToListAsync();
+
+                var indice = (int)TempData["indice"]! + 1;
+
+                if (indice > alumnos.Count - 1)
+                {
+                    indice = alumnos.Count - 1;
+                }
+
+                TempData["sesion"] = true;
+                TempData["indice"] = indice;
+                return View("Index", alumnos[indice]);
+
+        }
+        public async Task<IActionResult> Previous()
+        {
+          
+            
+                ViewBag.nombre = TempData["nombreUsuario"];
+                ViewBag.inicioSesion = true;
+                ViewBag.session = true;
+
+                var alumnos = await _context.Alumnos.ToListAsync();
+
+                var indice = (int)TempData["indice"]! - 1;
+
+                if (indice < 0)
+                {
+                    indice = 0;
+                }
+
+                TempData["sesion"] = true;
+                TempData["indice"] = indice;
+                return View("Index", alumnos[indice]);
+
+            
+         
+
+        }
+        public async Task<IActionResult> FirstStudent()
+        {
+            
+                ViewBag.nombre = TempData["nombreUsuario"];
+                ViewBag.inicioSesion = true;
+                ViewBag.session = true;
+
+                var alumno = await _context.Alumnos.FirstOrDefaultAsync();
+                TempData["sesion"] = true;
+                TempData["indice"] = 0;
+                return View("Index", alumno);
+
+
+        }
+
+        public async Task<IActionResult> LastStudent()
+        {
+            
+                ViewBag.nombre = TempData["nombreUsuario"];
+                ViewBag.inicioSesion = true;
+                ViewBag.session = true;
+
+                var alumnos = await _context.Alumnos.ToListAsync();
+                TempData["sesion"] = true;
+                TempData["indice"] = alumnos.Count - 1;
+                return View("Index", alumnos.Last());
 
         
 
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Alumnos == null)
-            {
-                return NotFound();
-            }
-
-            var alumnos = await _context.Alumnos
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (alumnos == null)
-            {
-                return NotFound();
-            }
-
-            return View(alumnos);
         }
+
+
 
 
         public IActionResult Create()

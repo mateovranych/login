@@ -3,7 +3,7 @@ using System.Text;
 
 
 
-namespace TrabajoFinalProgramacion.Recursos
+namespace PrograTF3.Recursos
 {
     public class Utilidades
     {
