@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "eTKBQej4WBeq3el3cSUgXY/3xxGrhEE4aLsjUEKVvpCemwgJoFea/wqcjdwBcFM1DJo0HPTQ+PIP7rXpGF9Cow==",
+  "dgSpecHash": "QEArgKjqRyCeUdR64Svv1BLzDZvpy2hCCRN1d4QMWwig8QBpo0mT+a69TQiagkfWWedIXozORllOJzifwysGbQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Mateo\\source\\repos\\TrabajoFinalProgramacion\\TrabajoFinalProgramacion.csproj",
+  "projectFilePath": "C:\\Users\\Mateo\\source\\repos\\TrabajoFinalProgramacion\\PrograTF3.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Mateo\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\Mateo\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

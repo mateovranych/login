@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TrabajoFinalProgramacion.Models;
+using PrograTF3.Models;
 
-using TrabajoFinalProgramacion.Recursos;
-using TrabajoFinalProgramacion.Servicios.Contrato;
+using PrograTF3.Recursos;
+using PrograTF3.Servicios.Contrato;
 using System.Security.Claims;
 
 
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 
-namespace TrabajoFinalProgramacion.Controllers
+namespace PrograTF3.Controllers
 {
     public class InicioController : Controller
     {

@@ -1,4 +1,4 @@
-namespace TrabajoFinalProgramacion.Models
+namespace PrograTF3.Models
 {
     public class ErrorViewModel
     {

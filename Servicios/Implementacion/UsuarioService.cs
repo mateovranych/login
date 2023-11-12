@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-using TrabajoFinalProgramacion.Servicios.Contrato;
-using TrabajoFinalProgramacion.Models;
+using PrograTF3.Servicios.Contrato;
+using PrograTF3.Models;
 
-namespace TrabajoFinalProgramacion.Servicios.Implementacion
+namespace PrograTF3.Servicios.Implementacion
 {
     public class UsuarioService : IUsuarioService
     {

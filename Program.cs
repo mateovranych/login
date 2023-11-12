@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using TrabajoFinalProgramacion.Models;
+using PrograTF3.Models;
 
 
-using TrabajoFinalProgramacion.Servicios.Contrato;
-using TrabajoFinalProgramacion.Servicios.Implementacion;
+using PrograTF3.Servicios.Contrato;
+using PrograTF3.Servicios.Implementacion;
 
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +33,14 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     {
         options.LoginPath = "/Inicio/IniciarSesion";
         options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+
     });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequiereAutenticacion", policy => policy.RequireAuthenticatedUser());
+    
+});
 
 //Sirve para que cuando te deslogees y quieras hacer para atrás no te lo permita.
 builder.Services.AddControllersWithViews(options =>
@@ -43,7 +50,6 @@ builder.Services.AddControllersWithViews(options =>
         {
             NoStore = true,
             Location = ResponseCacheLocation.None,
-
         }
        );
 });

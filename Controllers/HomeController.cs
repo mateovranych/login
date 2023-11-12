@@ -4,17 +4,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
-using TrabajoFinalProgramacion.Models;
+using PrograTF3.Models;
 
-namespace TrabajoFinalProgramacion.Controllers
+namespace PrograTF3.Controllers
 {
 
-    [Authorize]
+    [Authorize(Policy = "RequiereAutenticacion")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        
 
         public HomeController(ILogger<HomeController> logger)
         {

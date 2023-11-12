@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TrabajoFinalProgramacion.Models;
+using PrograTF3.Models;
 
-namespace TrabajoFinalProgramacion.Controllers
+namespace PrograTF3.Controllers
 {
+    [Authorize(Policy = "RequiereAutenticacion")]
+
     public class Profesores : Controller
     {
         private readonly DblogContext _context;
