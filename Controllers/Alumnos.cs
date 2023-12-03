@@ -1,67 +1,142 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-
 using PrograTF3.Models;
+using MySql.Data.MySqlClient;
 
 namespace PrograTF3.Controllers
 {
     [Authorize(Policy = "RequiereAutenticacion")]
     public class Alumnos : Controller
     {
-        private readonly DblogContext _context;
+        private readonly IConfiguration configuration;
 
-        public Alumnos(DblogContext context)
+        public Alumnos(IConfiguration configuration)
         {
-            _context = context;
+            this.configuration = configuration;
         }
 
 
         public async Task<IActionResult> Index()
         {
-               
-                var alumno = await _context.Alumnos.FirstOrDefaultAsync();                
+            string cadenaConexion = configuration.GetConnectionString("cadenaSQL");
+
+            string query = "SELECT * FROM alumnos LIMIT 1;";
+
+            Alumno alumno = new Alumno();
+            using (MySqlConnection connection = new MySqlConnection(cadenaConexion))
+            {
+                connection.Open();
+
+                MySqlCommand command = new MySqlCommand(query, connection);
+
+                MySqlDataReader reader = command.ExecuteReader();
+
+
+                if (reader.Read())
+                {
+                    alumno.Nombre = reader["nombre"].ToString();
+                    alumno.Dni = (int)reader["dni"] ;
+                    
+                    connection.Close();
+
+                }
+
                 TempData["indice"] = 0;
                 return View(alumno);
 
-           
+            }
+
         }
 
         public async Task<IActionResult> Next()
         {
-            
+            string cadenaConexion = configuration.GetConnectionString("cadenaSQL");
+
+            string query = $"SELECT * FROM alumnos";
+
+            List<Alumno> listAlumnos = new List<Alumno>();
+
+            using (MySqlConnection connection = new MySqlConnection(cadenaConexion))
+            {
+                connection.Open();
+
+                MySqlCommand command = new MySqlCommand(query, connection);
+
+                MySqlDataReader reader = command.ExecuteReader();
+
+
+                while(reader.Read())
+                {
+
+                    Alumno alumno = new Alumno();
+
+                    alumno.Nombre = reader["nombre"].ToString()!;
+
+                    alumno.Dni = (int)reader["dni"];
+
+                    listAlumnos.Add(alumno);
+                }
+
+                connection.Close();
+
+
+            }
+
                 ViewBag.nombre = TempData["nombreUsuario"];
                 ViewBag.inicioSesion = true;
                 ViewBag.session = true;
 
-                var alumnos = await _context.Alumnos.ToListAsync();
-
                 var indice = (int)TempData["indice"]! + 1;
 
-                if (indice > alumnos.Count - 1)
+                if (indice > listAlumnos.Count - 1)
                 {
-                    indice = alumnos.Count - 1;
+                    indice = listAlumnos.Count - 1;
                 }
 
                 TempData["sesion"] = true;
                 TempData["indice"] = indice;
-                return View("Index", alumnos[indice]);
+                return View("Index", listAlumnos[indice]);
 
         }
         public async Task<IActionResult> Previous()
         {
-          
-            
-                ViewBag.nombre = TempData["nombreUsuario"];
+            string cadenaConexion = configuration.GetConnectionString("cadenaSQL");
+
+            string query = $"SELECT * FROM alumnos";
+
+            List<Alumno> listAlumnos = new List<Alumno>();
+
+            using (MySqlConnection connection = new MySqlConnection(cadenaConexion))
+            {
+                connection.Open();
+
+                MySqlCommand command = new MySqlCommand(query, connection);
+
+                MySqlDataReader reader = command.ExecuteReader();
+
+
+                while (reader.Read())
+                {
+
+                    Alumno alumno = new Alumno();
+
+                    alumno.Nombre = reader["nombre"].ToString()!;
+
+                    alumno.Dni = (int)reader["dni"];
+
+                    listAlumnos.Add(alumno);
+                }
+
+                connection.Close();
+
+
+            }
+
+
+            ViewBag.nombre = TempData["nombreUsuario"];
                 ViewBag.inicioSesion = true;
                 ViewBag.session = true;
-
-                var alumnos = await _context.Alumnos.ToListAsync();
 
                 var indice = (int)TempData["indice"]! - 1;
 
@@ -72,7 +147,7 @@ namespace PrograTF3.Controllers
 
                 TempData["sesion"] = true;
                 TempData["indice"] = indice;
-                return View("Index", alumnos[indice]);
+                return View("Index", listAlumnos[indice]);
 
             
          
@@ -80,145 +155,89 @@ namespace PrograTF3.Controllers
         }
         public async Task<IActionResult> FirstStudent()
         {
-            
+            string cadenaConexion = configuration.GetConnectionString("cadenaSQL");
+
+            string query = $"SELECT * FROM alumnos LIMIT 1;";
+
+            Alumno alumno = new Alumno();
+            using (MySqlConnection connection = new MySqlConnection(cadenaConexion))
+            {
+                connection.Open();
+
+                MySqlCommand command = new MySqlCommand(query, connection);
+
+                MySqlDataReader reader = command.ExecuteReader();
+
+
+                if (reader.Read())
+                {
+                    alumno.Nombre = reader["nombre"].ToString();
+                    alumno.Dni = (int)reader["dni"];
+
+                    connection.Close();
+
+                }
+
+                TempData["indice"] = 0;
+
+            }
+
                 ViewBag.nombre = TempData["nombreUsuario"];
                 ViewBag.inicioSesion = true;
                 ViewBag.session = true;
 
-                var alumno = await _context.Alumnos.FirstOrDefaultAsync();
                 TempData["sesion"] = true;
                 TempData["indice"] = 0;
                 return View("Index", alumno);
 
 
         }
-
         public async Task<IActionResult> LastStudent()
         {
-            
+            string cadenaConexion = configuration.GetConnectionString("cadenaSQL");
+
+            string query = $"SELECT * FROM alumnos";
+
+            List<Alumno> listAlumnos = new List<Alumno>();
+
+            using (MySqlConnection connection = new MySqlConnection(cadenaConexion))
+            {
+                connection.Open();
+
+                MySqlCommand command = new MySqlCommand(query, connection);
+
+                MySqlDataReader reader = command.ExecuteReader();
+
+
+                while (reader.Read())
+                {
+
+                    Alumno alumno = new Alumno();
+
+                    alumno.Nombre = reader["nombre"].ToString()!;
+
+                    alumno.Dni = (int)reader["dni"];
+
+                    listAlumnos.Add(alumno);
+                }
+
+                connection.Close();
+
+
+            }
+
+
                 ViewBag.nombre = TempData["nombreUsuario"];
                 ViewBag.inicioSesion = true;
                 ViewBag.session = true;
 
-                var alumnos = await _context.Alumnos.ToListAsync();
                 TempData["sesion"] = true;
-                TempData["indice"] = alumnos.Count - 1;
-                return View("Index", alumnos.Last());
+                TempData["indice"] = listAlumnos.Count - 1;
+                return View("Index", listAlumnos.Last());
 
         
 
         }
 
-
-
-
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Dni")] Alumno alumnos)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(alumnos);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(alumnos);
-        }
-
-
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.Alumnos == null)
-            {
-                return NotFound();
-            }
-
-            var alumnos = await _context.Alumnos.FindAsync(id);
-            if (alumnos == null)
-            {
-                return NotFound();
-            }
-            return View(alumnos);
-        }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Dni")] Alumno alumnos)
-        {
-            if (id != alumnos.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(alumnos);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AlumnosExists(alumnos.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(alumnos);
-        }
-
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Alumnos == null)
-            {
-                return NotFound();
-            }
-
-            var alumnos = await _context.Alumnos
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (alumnos == null)
-            {
-                return NotFound();
-            }
-
-            return View(alumnos);
-        }
-
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.Alumnos == null)
-            {
-                return Problem("Entity set 'DblogContext.Alumnos'  is null.");
-            }
-            var alumnos = await _context.Alumnos.FindAsync(id);
-            if (alumnos != null)
-            {
-                _context.Alumnos.Remove(alumnos);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool AlumnosExists(int id)
-        {
-            return (_context.Alumnos?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
     }
 }

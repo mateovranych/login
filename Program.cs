@@ -1,10 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using PrograTF3.Models;
-
-
-using PrograTF3.Servicios.Contrato;
-using PrograTF3.Servicios.Implementacion;
-
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,22 +9,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-string connectionString = builder.Configuration.GetConnectionString("cadenaSQL");
 
-var serverVersion = new MySqlServerVersion(new Version(8, 0, 33));
-
-builder.Services.AddDbContext<DblogContext>(opciones => opciones.UseMySql(connectionString, serverVersion));
-
-
-
-builder.Services.AddScoped<IUsuarioService, UsuarioService>();
-
-
-
+//Agrega seguridad a la aplicación, para que se puedan proteger los controlador y puedan acceder a ellos solo los usuarios que esten
+//logueados.
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
         options.LoginPath = "/Inicio/IniciarSesion";
+        //Configura la sesión para que tenga una duración de 20 minutos.
         options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
 
     });

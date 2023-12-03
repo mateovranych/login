@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MySql.Data.MySqlClient;
 using PrograTF3.Models;
 
 namespace PrograTF3.Controllers
@@ -9,145 +10,130 @@ namespace PrograTF3.Controllers
 
     public class Profesores : Controller
     {
-        private readonly DblogContext _context;
-        public Profesores(DblogContext context)
+        private readonly IConfiguration configuration;
+
+        public Profesores(IConfiguration configuration)
         {
-            _context = context;
+            this.configuration = configuration;
         }
 
         public IActionResult Index()
         {
-            var listaProfesores = _context.Profesores.ToList();
-            return View(listaProfesores);
-        }
+            string cadenaConexion = configuration.GetConnectionString("cadenaSQL");
 
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Profesores == null)
+            string query = "SELECT * FROM profesores;";
+
+            List<Profesore> listProfesores = new List<Profesore>();
+            using (MySqlConnection connection = new MySqlConnection(cadenaConexion))
             {
-                return NotFound();
+                connection.Open();
+
+                MySqlCommand command = new MySqlCommand(query, connection);
+
+                MySqlDataReader reader = command.ExecuteReader();
+
+
+                while(reader.Read())
+                {
+                    Profesore profesor = new Profesore();
+                    profesor.Id = (int)reader["id"];
+                    profesor.Nombre = reader["nombre"].ToString();
+                    profesor.Apellido = reader["apellido"].ToString();
+
+                    listProfesores.Add(profesor);
+
+
+                }
+
+                connection.Close();
+
             }
 
-            var profesore = await _context.Profesores
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (profesore == null)
-            {
-                return NotFound();
-            }
-
-            return View(profesore);
+            return View(listProfesores);
         }
 
-
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Apellido")] Profesore profesores)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(profesores);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(profesores);
-        }
 
 
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Profesores == null)
+            string cadenaConexion = configuration.GetConnectionString("cadenaSQL");
+
+            string query = $"SELECT * FROM profesores WHERE id = {id};";
+
+            Profesore profesor = new Profesore();
+            
+            using (MySqlConnection connection = new MySqlConnection(cadenaConexion))
             {
+                connection.Open();
+
+                MySqlCommand command = new MySqlCommand(query, connection);
+
+                MySqlDataReader reader = command.ExecuteReader();
+
+
+                if (reader.Read())
+                {
+                    profesor.Id = (int)reader["id"];
+                    profesor.Nombre = reader["nombre"].ToString();
+                    profesor.Apellido = reader["apellido"].ToString();
+                }
+                else
+                {
+
                 return NotFound();
+                }
+
+                connection.Close();
+
             }
 
-            var profesores = await _context.Profesores.FindAsync(id);
-            if (profesores == null)
-            {
-                return NotFound();
-            }
-            return View(profesores);
+            return View(profesor);
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Apellido")] Profesore profesores)
+        public async Task<IActionResult> Edit(Profesore profesor)
         {
-            if (id != profesores.Id)
-            {
-                return NotFound();
-            }
+            string cadenaConexion = configuration.GetConnectionString("cadenaSQL");
 
-            if (ModelState.IsValid)
+            string query = $"UPDATE profesores SET nombre = '{profesor.Nombre}', apellido = '{profesor.Apellido}' WHERE id = {profesor.Id};" ;
+
+            List<Profesore> listProfesores = new List<Profesore>();
+
+            using (MySqlConnection connection = new MySqlConnection(cadenaConexion))
             {
-                try
+                connection.Open();
+
+                MySqlCommand command = new MySqlCommand(query, connection);
+
+                command.ExecuteNonQuery();
+
+                query = "SELECT * FROM profesores;";
+
+                MySqlCommand command2 = new MySqlCommand(query, connection);
+
+                MySqlDataReader reader = command2.ExecuteReader();
+
+
+
+                while (reader.Read())
                 {
-                    _context.Update(profesores);
-                    await _context.SaveChangesAsync();
+                    Profesore profesor2 = new Profesore();
+                    profesor2.Id = (int)reader["id"];
+                    profesor2.Nombre = reader["nombre"].ToString();
+                    profesor2.Apellido = reader["apellido"].ToString();
+
+                    listProfesores.Add(profesor2);
+
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProfesoresExists(profesores.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+
+                connection.Close();
+
             }
-            return View(profesores);
+            return View("Index",listProfesores);
         }
 
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Profesores == null)
-            {
-                return NotFound();
-            }
-
-            var profesores = await _context.Profesores
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (profesores == null)
-            {
-                return NotFound();
-            }
-
-            return View(profesores);
-        }
-
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.Profesores == null)
-            {
-                return Problem("Entity set 'DblogContext.Profesores'  is null.");
-            }
-            var profesores = await _context.Profesores.FindAsync(id);
-
-            if (profesores != null)
-            {
-                _context.Profesores.Remove(profesores);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool ProfesoresExists(int id)
-        {
-            return (_context.Profesores?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
     }
 }
 
